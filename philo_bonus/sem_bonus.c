@@ -6,11 +6,28 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 15:01:09 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 04:16:04 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:32:51 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+void	end_check(t_arg *arg, t_philo *philo)
+{
+	sem_wait(arg->finish.sema);
+	sem_post(arg->finish.sema);
+	sem_wait(arg->end_philo.sema);
+	sem_post(arg->end_philo.sema);
+	if (get_time_diff(philo->eat_time) >= arg->die_time)
+	{
+		sem_wait(arg->finish.sema);
+		sem_post(arg->check.sema);
+		philo->state = DIE;
+		printf("%d %d died\n", \
+			get_time_diff(arg->start_time), philo->num + 1);
+		exit(EXIT_SUCCESS);
+	}
+}
 
 int	init_sema(t_sema *m, const char *name, int count)
 {

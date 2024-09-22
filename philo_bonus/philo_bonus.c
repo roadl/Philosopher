@@ -6,28 +6,11 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:02:12 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 04:24:27 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:38:24 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	end_check(t_arg *arg, t_philo *philo)
-{
-	sem_wait(arg->finish.sema);
-	sem_post(arg->finish.sema);
-	sem_wait(arg->end_philo.sema);
-	sem_post(arg->end_philo.sema);
-	if (get_time_diff(philo->eat_time) >= arg->die_time)
-	{
-		sem_wait(arg->finish.sema);
-		sem_post(arg->check.sema);
-		philo->state = DIE;
-		printf("%d %d died\n", \
-			get_time_diff(arg->start_time), philo->num + 1);
-		exit(EXIT_SUCCESS);
-	}
-}
 
 void	*monitor_thread(void *info)
 {
@@ -77,28 +60,36 @@ void	philo_process(t_philo *philo)
 	}
 }
 
+int	create_philo_process(t_philo *p, pid_t *pids, int i)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		while (i >= 0)
+			kill(pids[i--], SIGKILL);
+		return (0);
+	}
+	else if (pid == 0)
+		philo_process(p + i);
+	else
+		pids[i] = pid;
+	return (1);
+}
+
 int	philo(t_arg *arg, t_philo *p, pid_t *pids)
 {
 	int		i;
 	int		status;
-	pid_t	pid;
 
 	i = -1;
 	while (++i < arg->philo_num)
 		init_philo(p + i, arg, i);
 	i = -1;
 	while (++i < arg->philo_num)
-	{
-		pid = fork();
-		if (pid < 0)
-		{
-			//에러처리, pid에 있는 프로세스 전부 kill하고 while문 탈출
-		}
-		else if (pid == 0)
-			philo_process(p + i);
-		else
-			pids[i] = pid;
-	}
+		if (!create_philo_process(p, pids, i))
+			break ;
 	i = -1;
 	while (1)
 		if (waitpid(-1, &status, 0) <= 0)
@@ -121,7 +112,8 @@ int	main(int argc, char **argv)
 	}
 	if (!init_arg(argc, argv, &arg))
 	{
-		ft_putstr_fd("Error: argument must be positive integer\n", STDERR_FILENO);
+		ft_putstr_fd("Error: argument must be positive integer\n", \
+			STDERR_FILENO);
 		return (-1);
 	}
 	p = (t_philo *)malloc(sizeof(t_philo) * arg.philo_num);

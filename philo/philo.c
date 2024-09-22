@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:02:12 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 04:25:03 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:39:03 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	main(int argc, char **argv)
 	}
 	if (!init_arg(argc, argv, &arg))
 	{
-		ft_putstr_fd("Error: argument must be positive integer\n", STDERR_FILENO);
+		ft_putstr_fd("Error: argument must be positive integer\n", \
+			STDERR_FILENO);
 		return (-1);
 	}
 	p = (t_philo *)malloc(sizeof(t_philo) * arg.philo_num);
