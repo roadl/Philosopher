@@ -1,16 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_util.c                                       :+:      :+:    :+:   */
+/*   philo_util_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:10:20 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 00:18:18 by yojin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:44:06 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
+
+char	*ft_strdup(const char *s)
+{
+	char	*dest;
+	size_t	i;
+	size_t	len;
+
+	len = 0;
+	while (*(s + len) != '\0')
+		len++;
+	dest = (char *)malloc((len + 1) * sizeof(char));
+	if (!dest)
+		return (0);
+	i = 0;
+	while (*(s + i))
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
 
 int	ft_putstr_fd(char *s, int fd)
 {
@@ -35,9 +57,8 @@ int	get_time_diff(struct timeval last_time)
 	return (time);
 }
 
-void	free_all(t_arg *arg, t_philo *philo, pthread_t *t)
+void	free_all(t_philo *philo, pthread_t *t)
 {
-	free(arg->forks);
 	free(philo);
 	free(t);
 }
@@ -47,8 +68,9 @@ void	print_philo(t_philo *philo, int type)
 	t_arg	*arg;
 
 	arg = philo->arg;
-	pthread_mutex_lock(&arg->finish.mutex);
-	pthread_mutex_lock(&arg->print.mutex);
+	if (access_sema(&arg->finish, 0))
+		return ;
+	sem_wait(arg->print.sema);
 	printf("%d %d ", get_time_diff(arg->start_time), philo->num + 1);
 	if (type == 1)
 		printf("has taken a fork\n");
@@ -60,6 +82,5 @@ void	print_philo(t_philo *philo, int type)
 		printf("is thinking\n");
 	else if (type == 5)
 		printf("died\n");
-	pthread_mutex_unlock(&arg->print.mutex);
-	pthread_mutex_unlock(&arg->finish.mutex);
+	sem_post(arg->print.sema);
 }

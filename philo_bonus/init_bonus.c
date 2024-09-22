@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:03:12 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 00:19:01 by yojin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:35:44 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 static int	ft_isdigit(char c)
 {
@@ -60,10 +60,8 @@ void	init_philo(t_philo *philo, t_arg *arg, int i)
 	philo->arg = arg;
 	philo->state = THINK;
 	philo->eat_count = 0;
-	philo->l_fork = &arg->forks[i];
-	philo->r_fork = &arg->forks[(i + 1) % arg->philo_num];
-	if (arg->philo_num == 1)
-		philo->r_fork->value = 0;
+	philo->holding_fork = 0;
+	philo->fork = &arg->forks;
 }
 
 int	init_arg(int argc, char **argv, t_arg *arg)
