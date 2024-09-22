@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:10:20 by yojin             #+#    #+#             */
-/*   Updated: 2024/08/15 19:44:06 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 03:28:51 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int	get_time_diff(struct timeval last_time)
 	return (time);
 }
 
-void	free_all(t_philo *philo, pthread_t *t)
+void	free_all(t_philo *philo, pid_t *p_ids)
 {
 	free(philo);
-	free(t);
+	free(p_ids);
 }
 
 void	print_philo(t_philo *philo, int type)
@@ -68,8 +68,7 @@ void	print_philo(t_philo *philo, int type)
 	t_arg	*arg;
 
 	arg = philo->arg;
-	if (access_sema(&arg->finish, 0))
-		return ;
+	sem_wait(arg->finish.sema);
 	sem_wait(arg->print.sema);
 	printf("%d %d ", get_time_diff(arg->start_time), philo->num + 1);
 	if (type == 1)
@@ -80,7 +79,6 @@ void	print_philo(t_philo *philo, int type)
 		printf("is sleeping\n");
 	else if (type == 4)
 		printf("is thinking\n");
-	else if (type == 5)
-		printf("died\n");
 	sem_post(arg->print.sema);
+	sem_post(arg->finish.sema);
 }

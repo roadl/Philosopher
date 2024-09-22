@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:03:12 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 00:19:01 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:24:17 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	philo_atoi(const char *str)
 		result += (*str) - '0';
 		str++;
 	}
+	if (result == 0)
+		return (-1);
 	return (result);
 }
 

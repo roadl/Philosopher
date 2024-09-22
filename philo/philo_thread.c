@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:49:10 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 00:20:14 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 03:33:05 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	try_eat(t_philo *philo)
 		}
 	}
 	philo->state = EAT;
+	print_philo(philo, 1);
+	print_philo(philo, 1);
 	gettimeofday(&philo->time, NULL);
 	gettimeofday(&philo->eat_time, NULL);
 	print_philo(philo, 2);

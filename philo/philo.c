@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:02:12 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 00:14:57 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:24:32 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ int	main(int argc, char **argv)
 	}
 	if (!init_arg(argc, argv, &arg))
 	{
-		ft_putstr_fd("Error: argument must be positive integer", STDERR_FILENO);
+		ft_putstr_fd("Error: argument must be positive integer\n", STDERR_FILENO);
 		return (-1);
 	}
 	p = (t_philo *)malloc(sizeof(t_philo) * arg.philo_num);
 	arg.forks = (t_mutex *)malloc(sizeof(t_mutex) * arg.philo_num);
-	t = (pthread_t *)malloc(sizeof(t_philo) * arg.philo_num);
+	t = (pthread_t *)malloc(sizeof(pthread_t) * arg.philo_num);
 	if (!p || !arg.forks || !t || !init_mutexes(&arg))
 	{
 		free_all(&arg, p, t);

@@ -6,7 +6,7 @@
 #    By: yojin <yojin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 13:12:14 by yojin             #+#    #+#              #
-#    Updated: 2024/08/15 19:39:08 by yojin            ###   ########.fr        #
+#    Updated: 2024/09/23 03:41:58 by yojin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread
 LDIR = ./
 HEADER = ./philo_bonus.h
 SRCS = philo_bonus.c init_bonus.c philo_util_bonus.c \
-		sem_bonus.c debug_bonus.c philo_thread_bonus.c
+		sem_bonus.c debug_bonus.c philo_process_bonus.c
 OBJS = $(SRCS:.c=.o)
 NAME = philo_bonus
 

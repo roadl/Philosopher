@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:10:20 by yojin             #+#    #+#             */
-/*   Updated: 2024/09/23 00:18:18 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 02:25:23 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ void	print_philo(t_philo *philo, int type)
 
 	arg = philo->arg;
 	pthread_mutex_lock(&arg->finish.mutex);
+	if (arg->finish.value > 0)
+	{
+		pthread_mutex_unlock(&arg->finish.mutex);
+		return ;
+	}
 	pthread_mutex_lock(&arg->print.mutex);
 	printf("%d %d ", get_time_diff(arg->start_time), philo->num + 1);
 	if (type == 1)

@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:48:40 by yojin             #+#    #+#             */
-/*   Updated: 2024/08/15 19:43:18 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:15:19 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef enum e_state {
 
 typedef struct s_sema
 {
-	int		value;
 	char	*name;
 	sem_t	*sema;
 }	t_sema;
@@ -43,10 +42,12 @@ typedef struct s_arg
 	int				sleep_time;
 	int				eat_time;
 	int				max_eat;
+	int				*test;
 	t_sema			forks;
 	t_sema			end_philo;
 	t_sema			finish;
 	t_sema			print;
+	t_sema			check;
 }	t_arg;
 
 typedef struct s_philo
@@ -55,7 +56,6 @@ typedef struct s_philo
 	struct timeval	eat_time;
 	int				eat_count;
 	int				num;
-	int				holding_fork;
 	t_arg			*arg;
 	t_sema			*fork;
 	t_state			state;
@@ -68,7 +68,7 @@ char	*ft_strdup(const char *s);
 int		ft_putstr_fd(char *s, int fd);
 int		get_time_diff(struct timeval last_time);
 void	print_philo(t_philo *philo, int type);
-void	free_all(t_philo *philo, pthread_t *t);
+void	free_all(t_philo *philo, pid_t *pids);
 
 void	destroy_semas(t_arg *arg);
 int		init_semas(t_arg *arg);

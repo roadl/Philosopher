@@ -6,7 +6,7 @@
 /*   By: yojin <yojin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 18:03:12 by yojin             #+#    #+#             */
-/*   Updated: 2024/08/15 19:35:44 by yojin            ###   ########.fr       */
+/*   Updated: 2024/09/23 04:23:43 by yojin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	philo_atoi(const char *str)
 		result += (*str) - '0';
 		str++;
 	}
+	if (result == 0)
+		return (-1);
 	return (result);
 }
 
@@ -60,7 +62,6 @@ void	init_philo(t_philo *philo, t_arg *arg, int i)
 	philo->arg = arg;
 	philo->state = THINK;
 	philo->eat_count = 0;
-	philo->holding_fork = 0;
 	philo->fork = &arg->forks;
 }
 
@@ -78,6 +79,8 @@ int	init_arg(int argc, char **argv, t_arg *arg)
 	arg->die_time = philo_atoi(argv[2]);
 	arg->eat_time = philo_atoi(argv[3]);
 	arg->sleep_time = philo_atoi(argv[4]);
+	arg->test = (int *)malloc(sizeof(int));
+	*(arg->test) = 0;
 	i = 0;
 	gettimeofday(&arg->start_time, NULL);
 	if (argc == 6)
